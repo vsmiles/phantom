@@ -994,7 +994,7 @@ func TestUpdateMovieApi(t *testing.T) {
 func requireBodyMatchManyMovies(t *testing.T, movies []db.Movies, body *bytes.Buffer) {
 	data, err := ioutil.ReadAll(body)
 	require.NoError(t, err)
-	var gotMovies []GetMoviesResponse
+	var gotMovies []getMoviesResponse
 	err = json.Unmarshal(data, &gotMovies)
 	require.NoError(t, err)
 	for i := range gotMovies {
@@ -1007,7 +1007,7 @@ func requireBodyMatchObjectId(t *testing.T, objectId primitive.ObjectID, body *b
 	data, err := ioutil.ReadAll(body)
 	require.NoError(t, err)
 	require.NotEmpty(t, data)
-	var gotMovie GetMoviesResponse
+	var gotMovie getMoviesResponse
 	err = json.Unmarshal(data, &gotMovie)
 	require.NoError(t, err)
 	require.Equal(t, objectId.Hex(), gotMovie.Id)

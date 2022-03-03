@@ -72,7 +72,7 @@ func (server *Server) createMovie(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"id": id.Hex()})
 }
 
-type GetMoviesResponse struct {
+type getMoviesResponse struct {
 	Id     string   `json:"id"`
 	Plot   string   `json:"plot"`
 	Genres []string `json:"genres"`
@@ -140,25 +140,8 @@ func (server *Server) searchForMovies(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	var rsp []GetMoviesResponse
-	for _, movie := range movies {
-		arg := GetMoviesResponse{
-			Id:     movie.Id.Hex(),
-			Plot:   movie.Plot,
-			Genres: movie.Genres,
-			Cast:   movie.Cast,
-			Poster: movie.Poster,
-			Title:  movie.Title,
-			Year:   movie.Year,
-			Imdb: struct {
-				Rating float64 `json:"rating"`
-				Votes  int64   `json:"votes"`
-				Id     int64   `json:"id"`
-			}(movie.Imdb),
-			Countries: movie.Countries,
-		}
-		rsp = append(rsp, arg)
-	}
+
+	rsp := generateGetMoviesResponse(movies)
 	ctx.JSON(http.StatusOK, rsp)
 }
 
@@ -191,25 +174,8 @@ func (server *Server) listMoviesByGenres(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	var rsp []GetMoviesResponse
-	for _, movie := range movies {
-		arg := GetMoviesResponse{
-			Id:     movie.Id.Hex(),
-			Plot:   movie.Plot,
-			Genres: movie.Genres,
-			Cast:   movie.Cast,
-			Poster: movie.Poster,
-			Title:  movie.Title,
-			Year:   movie.Year,
-			Imdb: struct {
-				Rating float64 `json:"rating"`
-				Votes  int64   `json:"votes"`
-				Id     int64   `json:"id"`
-			}(movie.Imdb),
-			Countries: movie.Countries,
-		}
-		rsp = append(rsp, arg)
-	}
+
+	rsp := generateGetMoviesResponse(movies)
 	ctx.JSON(http.StatusOK, rsp)
 }
 
@@ -233,25 +199,8 @@ func (server *Server) listTheMostWatchedMovies(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	var rsp []GetMoviesResponse
-	for _, movie := range movies {
-		arg := GetMoviesResponse{
-			Id:     movie.Id.Hex(),
-			Plot:   movie.Plot,
-			Genres: movie.Genres,
-			Cast:   movie.Cast,
-			Poster: movie.Poster,
-			Title:  movie.Title,
-			Year:   movie.Year,
-			Imdb: struct {
-				Rating float64 `json:"rating"`
-				Votes  int64   `json:"votes"`
-				Id     int64   `json:"id"`
-			}(movie.Imdb),
-			Countries: movie.Countries,
-		}
-		rsp = append(rsp, arg)
-	}
+
+	rsp := generateGetMoviesResponse(movies)
 	ctx.JSON(http.StatusOK, rsp)
 }
 
@@ -270,25 +219,8 @@ func (server *Server) listTheLatestReleasedMovies(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	var rsp []GetMoviesResponse
-	for _, movie := range movies {
-		arg := GetMoviesResponse{
-			Id:     movie.Id.Hex(),
-			Plot:   movie.Plot,
-			Genres: movie.Genres,
-			Cast:   movie.Cast,
-			Poster: movie.Poster,
-			Title:  movie.Title,
-			Year:   movie.Year,
-			Imdb: struct {
-				Rating float64 `json:"rating"`
-				Votes  int64   `json:"votes"`
-				Id     int64   `json:"id"`
-			}(movie.Imdb),
-			Countries: movie.Countries,
-		}
-		rsp = append(rsp, arg)
-	}
+
+	rsp := generateGetMoviesResponse(movies)
 	ctx.JSON(http.StatusOK, rsp)
 }
 
@@ -301,11 +233,6 @@ func (server *Server) getTheMostCommentedMovies() {
 // recommendedMovies TODO : This function is used to recommend movies for users
 func (server *Server) recommendedMovies(ctx *gin.Context) {
 
-}
-
-type updateMovieRequest struct {
-	Id        string `json:"id" binding:"required,hexadecimal,min=24"`
-	movieInfo createMovieRequest
 }
 
 func (server *Server) updateMovie(ctx *gin.Context) {
@@ -343,4 +270,27 @@ func (server *Server) updateMovie(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"updated": "OK"})
+}
+
+func generateGetMoviesResponse(movies []db.Movies) []getMoviesResponse {
+	var rsp []getMoviesResponse
+	for _, movie := range movies {
+		arg := getMoviesResponse{
+			Id:     movie.Id.Hex(),
+			Plot:   movie.Plot,
+			Genres: movie.Genres,
+			Cast:   movie.Cast,
+			Poster: movie.Poster,
+			Title:  movie.Title,
+			Year:   movie.Year,
+			Imdb: struct {
+				Rating float64 `json:"rating"`
+				Votes  int64   `json:"votes"`
+				Id     int64   `json:"id"`
+			}(movie.Imdb),
+			Countries: movie.Countries,
+		}
+		rsp = append(rsp, arg)
+	}
+	return rsp
 }
