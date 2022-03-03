@@ -2,7 +2,7 @@ package token
 
 import (
 	"github.com/stretchr/testify/require"
-	"mongodbSimple/util"
+	"phantom/util"
 	"testing"
 	"time"
 )
