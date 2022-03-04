@@ -154,6 +154,7 @@ func TestGetTheLatestReleasedMovies(t *testing.T) {
 		movie.Released = primitive.NewDateTimeFromTime(time.Now())
 		movies1 = append(movies1, movie)
 		addMovie(t, movie)
+		time.Sleep(time.Millisecond * 10)
 	}
 	sort.Slice(movies1, func(i, j int) bool {
 		return movies1[i].Released > movies1[j].Released // desc

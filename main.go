@@ -27,7 +27,7 @@ func main() {
 		log.Fatal("cannot connect mongodb: ", err)
 	}
 
-	mongoDatabase := mongoClient.Database("sample_mflix")
+	mongoDatabase := mongoClient.Database("phantom")
 	mongoStore := db.NewMongoStore(mongoDatabase)
 	server, err := api.NewServer(config, mongoStore)
 	if err != nil {
