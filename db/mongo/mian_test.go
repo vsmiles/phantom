@@ -30,7 +30,7 @@ func TestMain(m *testing.M) {
 		log.Fatal("cannot connect mongodb: ", err)
 	}
 
-	testDatabase = mongoClient.Database("sample_mflix")
+	testDatabase = mongoClient.Database("phantom")
 	testQueries = NewMongoQueries(testDatabase)
 
 	os.Exit(m.Run())
