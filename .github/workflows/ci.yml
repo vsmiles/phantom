@@ -14,8 +14,7 @@ jobs:
     services:
       mongo:
         image: mongo
-        restart: always
-        environment:
+        env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: root
           ports:
