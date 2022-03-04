@@ -1,8 +1,23 @@
 version: "3.9"
 services:
   mongo:
-    image: mongo:5.0.6-focal
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=root
-        - MONGO_INITDB_ROOT_PASSWORD=root
-        - MONGO_INITDB_DATABASE=mongodb_simple
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=phantom
+
+  api:
+    build:
+       context: .
+       dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - MONGO_SOURCE=mongodb://root:root@mongo:27017/admin
+    depends_on:
+      - mongo
+
+    entrypoint: ["/app/wait-for.sh", "mongo:27017", "--", "/app/start.sh"]
+    command: ["/app/main"]
