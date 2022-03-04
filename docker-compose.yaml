@@ -1,21 +1,23 @@
 version: "3.9"
 services:
   mongo:
-    image: mongo:latest
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=root
-        - MONGO_INITDB_ROOT_PASSWORD=root
-        - MONGO_INITDB_DATABASE=phantom
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=phantom
+
   api:
     build:
-      context:
-      dockerfile: Dockerfile
+       context: .
+       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
-      - MONGO_SOURCE=mongodb://root:root@localhost:27017/admin
+      - MONGO_SOURCE=mongodb://root:root@mongo:27017/admin
     depends_on:
       - mongo
 
     entrypoint: ["/app/wait-for.sh", "mongo:27017", "--", "/app/start.sh"]
-    comment: ["/app/main"]
+    command: ["/app/main"]
