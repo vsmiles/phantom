@@ -1,4 +1,7 @@
 # phantom
+
+[![Test](https://github.com/gwuhaolin/livego/workflows/Test/badge.svg)](https://github.com/vsmiles/phantom/actions?query=workflow%3ATest)
+
 A home theater system for use with a NAS
 
 **搞一个家庭影院系统，有点像NetFlix，通过Docker部署到NAS上，必须能看4K HDR DolbyVision电影。**
